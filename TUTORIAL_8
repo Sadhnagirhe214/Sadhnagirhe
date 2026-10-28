@@ -1,0 +1,105 @@
+#include <stdio.h>
+
+int tree[100];
+
+void create(int n)
+{
+    int i, x, pos;
+
+    for(i = 0; i < 100; i++)
+        tree[i] = -1;
+
+    for(i = 0; i < n; i++)
+    {
+        printf("Enter element: ");
+        scanf("%d", &x);
+
+        pos = 0;
+
+        while(tree[pos] != -1)
+        {
+            if(x < tree[pos])
+                pos = 2 * pos + 1;
+            else
+                pos = 2 * pos + 2;
+        }
+
+        tree[pos] = x;
+    }
+}
+
+int search(int key)
+{
+    int pos = 0;
+
+    while(pos < 100 && tree[pos] != -1)
+    {
+        if(tree[pos] == key)
+            return 1;
+        else if(key < tree[pos])
+            pos = 2 * pos + 1;
+        else
+            pos = 2 * pos + 2;
+    }
+
+    return 0;
+}
+
+void inorder(int pos)
+{
+    if(pos < 100 && tree[pos] != -1)
+    {
+        inorder(2 * pos + 1);
+        printf("%d ", tree[pos]);
+        inorder(2 * pos + 2);
+    }
+}
+
+void preorder(int pos)
+{
+    if(pos < 100 && tree[pos] != -1)
+    {
+        printf("%d ", tree[pos]);
+        preorder(2 * pos + 1);
+        preorder(2 * pos + 2);
+    }
+}
+
+void postorder(int pos)
+{
+    if(pos < 100 && tree[pos] != -1)
+    {
+        postorder(2 * pos + 1);
+        postorder(2 * pos + 2);
+        printf("%d ", tree[pos]);
+    }
+}
+
+int main()
+{
+    int n, key;
+
+    printf("Enter number of nodes: ");
+    scanf("%d", &n);
+
+    create(n);
+
+    printf("\nInorder: ");
+    inorder(0);
+
+    printf("\nPreorder: ");
+    preorder(0);
+
+    printf("\nPostorder: ");
+    postorder(0);
+
+    printf("\nEnter element to search: ");
+    scanf("%d", &key);
+
+    if(search(key))
+        printf("Element found");
+    else
+        printf("Element not found");
+
+    return 0;
+}
